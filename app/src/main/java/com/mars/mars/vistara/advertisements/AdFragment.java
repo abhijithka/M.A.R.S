@@ -36,6 +36,8 @@ public class AdFragment extends Fragment {
         ads.add(adItem1);
         AdItem adItem2 = new AdItem("Kitchen", "Biriyani");
         ads.add(adItem2);
+        AdItem adItem3 = new AdItem("Kitchen", "Biriyani");
+        ads.add(adItem2);
 
         // End
 
