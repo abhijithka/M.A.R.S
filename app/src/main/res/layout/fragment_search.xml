@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        tools:context="com.mars.mars.vistara.SearchFragment">
+
+    <RelativeLayout
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fetchPNRLayout"
+            tools:visibility="visible">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="#eee2e2"
+                android:orientation="horizontal">
+
+            <EditText
+                    android:id="@+id/depAirportCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="From" />
+
+            <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/arrow" />
+
+            <EditText
+                    android:id="@+id/arrAirportCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:hint="To" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/foodBanner"
+            android:layout_margin="10dp"
+            android:layout_below="@id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/bannerTextView"
+                android:clickable="true"
+                android:background="#00aaff"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You can order these food from departure airport"/>
+
+        <fragment android:name="com.mars.mars.vistara.advertisements.AdFragment"
+                android:id="@+id/adFragment"
+                android:layout_below="@id/bannerTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <Button
+            android:id="@+id/searchBtn"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/foodBanner"
+            android:text="Search Flights" />
+</RelativeLayout>
