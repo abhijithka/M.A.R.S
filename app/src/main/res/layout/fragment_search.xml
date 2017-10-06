@@ -3,7 +3,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        tools:context="com.mars.mars.vistara.SearchFragment">
+        tools:context="com.mars.mars.vistara.search.SearchFragment">
 
     <RelativeLayout
             android:id="@+id/search"
@@ -16,25 +16,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:background="#eeeeee"
                 android:layout_margin="10dp"
-                android:background="#eee2e2"
                 android:orientation="horizontal">
 
             <EditText
+                    android:textCursorDrawable="@null"
                     android:id="@+id/depAirportCode"
+                    android:backgroundTint="#000000"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="From" />
 
             <ImageView
+                    android:textCursorDrawable="@null"
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginTop="10dp"
                     android:src="@drawable/arrow" />
 
             <EditText
+                    android:backgroundTint="#000000"
                     android:id="@+id/arrAirportCode"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -78,4 +81,15 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/foodBanner"
             android:text="Search Flights" />
+
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/searchResults"
+            android:layout_below="@id/searchBtn"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 </RelativeLayout>

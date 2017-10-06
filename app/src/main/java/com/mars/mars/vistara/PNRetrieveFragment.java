@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
@@ -18,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.mars.mars.vistara.advertisements.AdFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +35,9 @@ public class PNRetrieveFragment extends Fragment {
     private EditText pnrEditText;
     private Button fetchTripBtn;
     RelativeLayout retrievedPNRLayout;
+    ProgressBar progressBar;
     onPnrRetrievedListener mCallback;
+    AdFragment adFragment;
 
     public interface onPnrRetrievedListener {
 
@@ -52,6 +56,9 @@ public class PNRetrieveFragment extends Fragment {
         pnrEditText = rootView.findViewById(R.id.pnrEditText);
         fetchTripBtn = rootView.findViewById(R.id.fetchTripBtn);
         retrievedPNRLayout = rootView.findViewById(R.id.retrievedPNRLayout);
+        progressBar = rootView.findViewById(R.id.progressBar);
+        retrievedPNRLayout.setVisibility(View.GONE);
+        adFragment = (AdFragment) getChildFragmentManager().findFragmentById(R.id.adFragment);
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         fetchTripBtn.setOnClickListener(getFetchTripListener(requestQueue));
         return rootView;
@@ -62,6 +69,7 @@ public class PNRetrieveFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, getContext().getString(R.string
                     .pnrdataurl), null, new Response.Listener<JSONObject>() {
                     @Override
@@ -73,10 +81,13 @@ public class PNRetrieveFragment extends Fragment {
                                 JSONObject trip = pnrList.getJSONObject(i);
                                 if (trip.getString("pnr").equalsIgnoreCase(pnrEditText.getText().toString())) {
                                     retrievedPNRLayout.setVisibility(View.VISIBLE);
+                                    adFragment.getView().findViewById(R.id.ads).setVisibility(View.VISIBLE);
                                     mCallback.onTripFetched();
                                     break;
                                 }
                             }
+                            progressBar.setVisibility(View.GONE);
+                            Utilities.hideSoftKeyboard(getView(), getActivity());
                         } catch (JSONException e) {
                         }
                     }
@@ -84,6 +95,7 @@ public class PNRetrieveFragment extends Fragment {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 );

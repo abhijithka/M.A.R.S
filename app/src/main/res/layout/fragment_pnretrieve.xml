@@ -7,59 +7,55 @@
 
     <RelativeLayout
             android:id="@+id/fetchPNRLayout"
-            android:layout_margin="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp">
 
         <EditText
                 android:id="@+id/pnrEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Enter PNR (eg : OVLXO2)"/>
+                android:textCursorDrawable="@null"
+                android:backgroundTint="#ffffff"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:hint="Enter PNR (eg : OVLXO2)" />
+
         <Button
                 android:id="@+id/fetchTripBtn"
-                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fetch"/>
+                android:layout_alignParentEnd="true"
+                android:text="Fetch" />
+
+        <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_marginTop="5dp"
+                android:layout_toStartOf="@id/fetchTripBtn"
+                android:layout_marginEnd="5dp"
+                android:indeterminateTint="#ffffff"
+                android:indeterminate="true"
+                android:layout_width="35dp"
+                android:visibility="gone"
+                android:layout_height="35dp" />
+
     </RelativeLayout>
 
     <RelativeLayout
             android:id="@+id/retrievedPNRLayout"
-            android:layout_below="@id/fetchPNRLayout"
             android:layout_width="match_parent"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fetchPNRLayout">
 
-        <LinearLayout
-                android:padding="20dp"
-                android:layout_margin="20dp"
-                android:background="#fff1ff"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <include layout="@layout/tripcard" />
 
-            <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="BLR"
-                    android:layout_height="wrap_content" />
-
-            <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/arrow"
-                    android:layout_weight="1"/>
-
-            <TextView
-                    android:gravity="end"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="LON"
-                    android:layout_height="wrap_content" />
-
-        </LinearLayout>
     </RelativeLayout>
+
+    <fragment
+            android:id="@+id/adFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.mars.mars.vistara.advertisements.AdFragment"
+            android:layout_below="@id/retrievedPNRLayout" />
 
 </RelativeLayout>

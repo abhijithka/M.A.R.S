@@ -7,10 +7,12 @@ public class AdItem {
 
     private String restaurantName;
     private String itemName;
+    private Integer price;
 
-    public AdItem(String restaurantName, String itemName) {
+    public AdItem(String restaurantName, String itemName, Integer price) {
         this.restaurantName = restaurantName;
         this.itemName = itemName;
+        this.price = price;
     }
 
     public String getRestaurantName() {
@@ -28,4 +30,13 @@ public class AdItem {
     public void setItemName(String itemName) {
         this.itemName = itemName;
     }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
 }

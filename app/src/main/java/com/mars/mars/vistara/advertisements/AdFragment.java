@@ -1,6 +1,7 @@
 package com.mars.mars.vistara.advertisements;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,27 +29,34 @@ public class AdFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_ad, container, false);
+        populateAds();
+
+        adAdapter.notifyDataSetChanged();
+
+        return  rootView;
+    }
+
+    private void populateAds() {
         adRecyclerView = rootView.findViewById(R.id.ads);
-
-        // Dummy ads - Start
-        List<AdItem> ads = new ArrayList<>();
-        AdItem adItem1 = new AdItem("Dominos", "Cheese Pizza");
-        ads.add(adItem1);
-        AdItem adItem2 = new AdItem("Kitchen", "Biriyani");
-        ads.add(adItem2);
-        AdItem adItem3 = new AdItem("Kitchen", "Biriyani");
-        ads.add(adItem2);
-
-        // End
-
+        List<AdItem> ads = getAdItems();
         adAdapter = new AdAdapter(ads);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         adRecyclerView.setLayoutManager(mLayoutManager);
         adRecyclerView.setItemAnimator(new DefaultItemAnimator());
         adRecyclerView.setAdapter(adAdapter);
+    }
 
-        adAdapter.notifyDataSetChanged();
-
-        return  rootView;
+    @NonNull
+    private List<AdItem> getAdItems() {
+        // Dummy ads - Start
+        List<AdItem> ads = new ArrayList<>();
+        AdItem adItem1 = new AdItem("Dominos", "Cheese Pizza", 100);
+        ads.add(adItem1);
+        AdItem adItem2 = new AdItem("Punjabi Dhaba", "Roti", 200);
+        ads.add(adItem2);
+        AdItem adItem3 = new AdItem("Kitchen", "Biriyani", 300);
+        ads.add(adItem3);
+        // End
+        return ads;
     }
 }
