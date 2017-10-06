@@ -1,6 +1,7 @@
 package com.mars.mars.vistara;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -13,5 +14,10 @@ public class Utilities {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context
             .INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void showSnackbar(View view, String msg) {
+        Snackbar mySnackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+        mySnackbar.show();
     }
 }

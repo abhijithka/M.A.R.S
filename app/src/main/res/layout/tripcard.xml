@@ -22,12 +22,14 @@
                 android:layout_weight="1">
 
             <TextView
+                    android:textStyle="bold"
                     android:id="@+id/flightNumber"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:text="SQ 101"
                     android:layout_height="match_parent" />
             <TextView
+                    android:textStyle="bold"
                     android:id="@+id/depDate"
                     android:text="27 Jan 2018"
                     android:gravity="end"
@@ -44,6 +46,9 @@
                 android:orientation="horizontal">
 
             <TextView
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:textColor="#4169e1"
                     android:id="@+id/depAirportCode"
                     android:gravity="center_vertical"
                     android:layout_width="0dp"
@@ -58,6 +63,9 @@
                     android:src="@drawable/arrow" />
 
             <TextView
+                    android:textSize="25sp"
+                    android:textColor="#4169e1"
+                    android:textStyle="bold"
                     android:id="@+id/arrAirportCode"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

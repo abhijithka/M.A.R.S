@@ -7,12 +7,16 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mars.mars.vistara.R;
@@ -32,10 +36,12 @@ public class SearchFragment extends Fragment {
     private EditText arrAirportCode;
     private View rootView;
     private AdFragment adFragment;
+    private LinearLayout bannerLayout;
     private TextView bannerTextView;
     private RecyclerView tripsRecyclerView;
     private SearchResultAdapter searchResultAdapter;
     private Button searchBtn;
+    private ImageButton downArrowImgButton;
     View ads;
 
     public SearchFragment() {
@@ -49,7 +55,9 @@ public class SearchFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
         depAirportCode = rootView.findViewById(R.id.depAirportCode);
         arrAirportCode = rootView.findViewById(R.id.arrAirportCode);
+        bannerLayout = rootView.findViewById(R.id.bannerLayout);
         bannerTextView = rootView.findViewById(R.id.bannerTextView);
+        downArrowImgButton = rootView.findViewById(R.id.downArrowImgButton);
         searchBtn = rootView.findViewById(R.id.searchBtn);
         adFragment = (AdFragment)getChildFragmentManager().findFragmentById(R.id.adFragment);
         ads = adFragment.getView().findViewById(R.id.ads);
@@ -71,8 +79,10 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() >= 3) {
-                    bannerTextView.setVisibility(View.VISIBLE);
+                if (charSequence.length() == 3) {
+                    bannerLayout.setVisibility(View.VISIBLE);
+                } else {
+                    bannerLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -84,14 +94,38 @@ public class SearchFragment extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<TripCardItem> trips = getTripItems(depAirportCode.getText().toString(), arrAirportCode.getText().toString());
-                searchResultAdapter.setTripList(trips);
-                tripsRecyclerView.setVisibility(View.VISIBLE);
+                if (!validateAirportCodes()) {
+                    Utilities.showSnackbar(getView(), "Please enter a valid departure and arrival airport code");
+                } else {
+                    List<TripCardItem> trips = getTripItems(depAirportCode.getText().toString(),
+                        arrAirportCode.getText().toString());
+                    searchResultAdapter.setTripList(trips);
+                    tripsRecyclerView.setVisibility(View.VISIBLE);
+                }
                 Utilities.hideSoftKeyboard(getView(), getContext());
-
             }
         });
         return rootView;
+    }
+
+    private boolean validateAirportCodes() {
+        if (TextUtils.isEmpty(depAirportCode.getText().toString())) {
+            return false;
+        } else {
+            String depCode = depAirportCode.getText().toString();
+            if (depCode.length() != 3) {
+                return false;
+            }
+        }
+        if (TextUtils.isEmpty(arrAirportCode.getText().toString())) {
+            return false;
+        } else {
+            String arrCode = arrAirportCode.getText().toString();
+            if (arrCode.length() != 3) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void setUpRecyclerView() {

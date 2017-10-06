@@ -59,19 +59,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <TextView
-                android:id="@+id/bannerTextView"
-                android:clickable="true"
-                android:background="#00aaff"
-                android:gravity="center"
-                android:visibility="gone"
+        <LinearLayout
+                android:id="@+id/bannerLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="You can order these food from departure airport"/>
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_weight="8"
+                    android:id="@+id/bannerTextView"
+                    android:clickable="true"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="You can order these food from departure airport"/>
+
+            <ImageButton
+                    android:id="@+id/downArrowImgButton"
+                    tools:backgroundTint="#000000"
+                    android:scaleY="3"
+                    android:scaleX="0.8"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="#ffffff"
+                    android:background="@drawable/downarrow"/>
+        </LinearLayout>
 
         <fragment android:name="com.mars.mars.vistara.advertisements.AdFragment"
                 android:id="@+id/adFragment"
-                android:layout_below="@id/bannerTextView"
+                android:layout_below="@id/bannerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
