@@ -21,6 +21,7 @@
                 android:orientation="horizontal">
 
             <EditText
+                    android:inputType="textCapCharacters"
                     android:textCursorDrawable="@null"
                     android:id="@+id/depAirportCode"
                     android:backgroundTint="#000000"
@@ -37,6 +38,8 @@
                     android:src="@drawable/arrow" />
 
             <EditText
+                    android:inputType="textCapCharacters"
+                    android:textCursorDrawable="@null"
                     android:backgroundTint="#000000"
                     android:id="@+id/arrAirportCode"
                     android:layout_width="0dp"

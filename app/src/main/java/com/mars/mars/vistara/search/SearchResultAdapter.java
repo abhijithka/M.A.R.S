@@ -56,4 +56,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         }
     }
 
+    public void setTripList(List<TripCardItem> tripList) {
+        this.tripList = tripList;
+        notifyDataSetChanged();
+    }
 }

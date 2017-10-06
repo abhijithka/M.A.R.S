@@ -1,6 +1,5 @@
 package com.mars.mars.vistara.search;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,17 +11,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mars.mars.vistara.R;
 import com.mars.mars.vistara.Utilities;
-import com.mars.mars.vistara.advertisements.AdAdapter;
 import com.mars.mars.vistara.advertisements.AdFragment;
-import com.mars.mars.vistara.advertisements.AdItem;
 import com.mars.mars.vistara.advertisements.SearchResultAdapter;
 
 import java.util.ArrayList;
@@ -85,20 +80,23 @@ public class SearchFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
             }
         });
-        populateRecyclerView();
+        setUpRecyclerView();
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                List<TripCardItem> trips = getTripItems(depAirportCode.getText().toString(), arrAirportCode.getText().toString());
+                searchResultAdapter.setTripList(trips);
                 tripsRecyclerView.setVisibility(View.VISIBLE);
+                Utilities.hideSoftKeyboard(getView(), getContext());
 
             }
         });
         return rootView;
     }
 
-    private void populateRecyclerView() {
+    private void setUpRecyclerView() {
         tripsRecyclerView = rootView.findViewById(R.id.searchResults);
-        List<TripCardItem> trips = getTripItems(depAirportCode.getText().toString(), arrAirportCode.getText().toString());
+        List<TripCardItem> trips = getTripItems("", "");
         searchResultAdapter = new SearchResultAdapter(trips);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         tripsRecyclerView.setLayoutManager(mLayoutManager);
