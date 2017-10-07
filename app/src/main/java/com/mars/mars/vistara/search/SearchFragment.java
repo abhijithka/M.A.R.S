@@ -19,10 +19,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.mars.mars.vistara.R;
 import com.mars.mars.vistara.Utilities;
 import com.mars.mars.vistara.advertisements.AdFragment;
 import com.mars.mars.vistara.advertisements.SearchResultAdapter;
+import com.mars.mars.vistara.restaurants.RestaurantListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +40,13 @@ public class SearchFragment extends Fragment {
     private EditText depAirportCode;
     private EditText arrAirportCode;
     private View rootView;
-    private AdFragment adFragment;
+    private RestaurantListFragment restaurantFragment;
     private LinearLayout bannerLayout;
     private TextView bannerTextView;
     private RecyclerView tripsRecyclerView;
     private SearchResultAdapter searchResultAdapter;
     private Button searchBtn;
+    private RecyclerView restaurantsRecyclerView;
     private ImageButton downArrowImgButton;
     View ads;
 
@@ -59,16 +65,18 @@ public class SearchFragment extends Fragment {
         bannerTextView = rootView.findViewById(R.id.bannerTextView);
         downArrowImgButton = rootView.findViewById(R.id.downArrowImgButton);
         searchBtn = rootView.findViewById(R.id.searchBtn);
-        adFragment = (AdFragment)getChildFragmentManager().findFragmentById(R.id.adFragment);
-        ads = adFragment.getView().findViewById(R.id.ads);
+        restaurantFragment = (RestaurantListFragment)getChildFragmentManager().findFragmentById(R.id.restaurantFragment);
+        restaurantsRecyclerView = restaurantFragment.getView().findViewById(R.id.restaurants);
         bannerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utilities.hideSoftKeyboard(view, getActivity());
-                if (ads.getVisibility() == View.VISIBLE) {
-                    ads.setVisibility(View.GONE);
-                } else {
-                    ads.setVisibility(View.VISIBLE);
+                if (restaurantsRecyclerView.getVisibility() == View.VISIBLE) {
+                    restaurantsRecyclerView.setVisibility(View.GONE);
+                    return;
+                }
+                if (bannerTextView.getVisibility() == View.VISIBLE) {
+                    restaurantsRecyclerView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -80,7 +88,13 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 3) {
-                    bannerLayout.setVisibility(View.VISIBLE);
+                    List<View> viewsToMakeVisible = new ArrayList<View>();
+                    viewsToMakeVisible.add(bannerLayout);
+                    JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, getContext().getString(R
+                        .string.restaurantDataUrl), null, Utilities.getRestaurantListener(charSequence.toString(),
+                        restaurantFragment, viewsToMakeVisible), Utilities.getRestaurantErrorListener());
+                    final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                    requestQueue.add(obreq);
                 } else {
                     bannerLayout.setVisibility(View.GONE);
                 }

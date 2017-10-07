@@ -34,6 +34,7 @@ public class AdAdapter extends RecyclerView.Adapter<AdAdapter.MyViewHolder> {
         AdItem adItem = adsList.get(position);
         holder.restaurantName.setText(adItem.getRestaurantName());
         holder.itemName.setText(adItem.getItemName());
+        holder.itemPrice.setText(Integer.toString(adItem.getPrice()));
     }
 
     @Override
@@ -43,12 +44,13 @@ public class AdAdapter extends RecyclerView.Adapter<AdAdapter.MyViewHolder> {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView restaurantName, itemName;
+        public TextView restaurantName, itemName, itemPrice;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             restaurantName = itemView.findViewById(R.id.restaurantName);
             itemName = itemView.findViewById(R.id.itemName);
+            itemPrice = itemView.findViewById(R.id.itemPrice);
         }
     }
 

@@ -89,8 +89,8 @@
                     android:background="@drawable/downarrow"/>
         </LinearLayout>
 
-        <fragment android:name="com.mars.mars.vistara.advertisements.AdFragment"
-                android:id="@+id/adFragment"
+        <fragment android:name="com.mars.mars.vistara.restaurants.RestaurantListFragment"
+                android:id="@+id/restaurantFragment"
                 android:layout_below="@id/bannerLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

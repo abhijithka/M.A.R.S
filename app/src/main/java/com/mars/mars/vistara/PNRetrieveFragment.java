@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,11 +21,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.mars.mars.vistara.advertisements.AdFragment;
+import com.mars.mars.vistara.restaurants.Restaurant;
+import com.mars.mars.vistara.restaurants.RestaurantListFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,12 +42,18 @@ public class PNRetrieveFragment extends Fragment {
     private Button fetchTripBtn;
     RelativeLayout retrievedPNRLayout;
     ProgressBar progressBar;
-    onPnrRetrievedListener mCallback;
-    AdFragment adFragment;
+    onPnrRetrievedListener pnrRetrievedCallBack;
+    RestaurantListFragment restaurantFragment;
+    TextView bannerTextView;
 
     public interface onPnrRetrievedListener {
 
         public void onTripFetched();
+    }
+
+    public interface onRestaurantsRetrievedListener {
+
+        public void onRestaurantsFetched(List<Restaurant> restaurants);
     }
 
     public PNRetrieveFragment() {
@@ -56,9 +68,11 @@ public class PNRetrieveFragment extends Fragment {
         pnrEditText = rootView.findViewById(R.id.pnrEditText);
         fetchTripBtn = rootView.findViewById(R.id.fetchTripBtn);
         retrievedPNRLayout = rootView.findViewById(R.id.retrievedPNRLayout);
+        bannerTextView = rootView.findViewById(R.id.bannerTextView);
         progressBar = rootView.findViewById(R.id.progressBar);
         retrievedPNRLayout.setVisibility(View.GONE);
-        adFragment = (AdFragment) getChildFragmentManager().findFragmentById(R.id.adFragment);
+        restaurantFragment = (RestaurantListFragment)getChildFragmentManager()
+            .findFragmentById(R.id.restaurantFragment);
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         fetchTripBtn.setOnClickListener(getFetchTripListener(requestQueue));
         return rootView;
@@ -69,37 +83,63 @@ public class PNRetrieveFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (TextUtils.isEmpty(pnrEditText.getText().toString())) {
+                    Utilities.hideSoftKeyboard(getView(), getActivity());
+                    Utilities.showSnackbar(getView(), "Please enter a valid PNR");
+                    return;
+                }
                 progressBar.setVisibility(View.VISIBLE);
                 JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, getContext().getString(R.string
-                    .pnrdataurl), null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.d(TAG, response.toString());
-                            JSONArray pnrList = response.getJSONArray("pnrList");
-                            for (int i = 0; i < pnrList.length(); i++) {
-                                JSONObject trip = pnrList.getJSONObject(i);
-                                if (trip.getString("pnr").equalsIgnoreCase(pnrEditText.getText().toString())) {
-                                    retrievedPNRLayout.setVisibility(View.VISIBLE);
-                                    adFragment.getView().findViewById(R.id.ads).setVisibility(View.VISIBLE);
-                                    mCallback.onTripFetched();
-                                    break;
-                                }
-                            }
-                            progressBar.setVisibility(View.GONE);
-                            Utilities.hideSoftKeyboard(getView(), getActivity());
-                        } catch (JSONException e) {
-                        }
-                    }
-                },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                );
+                    .pnrdataurl), null, getListener(requestQueue), getErrorListener());
                 requestQueue.add(obreq);
+            }
+        };
+    }
+
+    @NonNull
+    private Response.ErrorListener getErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+                Utilities.showSnackbar(getView(), "Sorry no trips found");
+            }
+        };
+    }
+
+    @NonNull
+    private Response.Listener<JSONObject> getListener(final RequestQueue requestQueue) {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    Log.d(TAG, response.toString());
+                    boolean pnrFound = false;
+                    JSONArray pnrList = response.getJSONArray("pnrList");
+                    for (int i = 0; i < pnrList.length(); i++) {
+                        JSONObject trip = pnrList.getJSONObject(i);
+                        if (trip.getString("pnr").equalsIgnoreCase(pnrEditText.getText().toString())) {
+                            String depAirportCode = trip.getString("depAirportCode");
+                            List<View> viewsToMakeVisible = new ArrayList<>();
+                            viewsToMakeVisible.add(bannerTextView);
+                            viewsToMakeVisible.add(restaurantFragment.getView().findViewById(R.id.restaurants));
+                            JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, getContext().getString(R
+                                .string.restaurantDataUrl), null,
+                                Utilities.getRestaurantListener(depAirportCode, restaurantFragment, viewsToMakeVisible),
+                                Utilities.getRestaurantErrorListener());
+                            requestQueue.add(obreq);
+                            retrievedPNRLayout.setVisibility(View.VISIBLE);
+                            pnrFound = true;
+                            break;
+                        }
+                    }
+                    if (!pnrFound) {
+                        Utilities.showSnackbar(getView(), "Sorry no trips found");
+                    }
+                    progressBar.setVisibility(View.GONE);
+                    Utilities.hideSoftKeyboard(getView(), getActivity());
+                } catch (JSONException e) {
+                }
             }
         };
     }
@@ -107,6 +147,6 @@ public class PNRetrieveFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallback = (onPnrRetrievedListener)context;
+        pnrRetrievedCallBack = (onPnrRetrievedListener)context;
     }
 }

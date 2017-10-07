@@ -23,18 +23,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PNRetrieveFragment.onPnrRetrievedListener {
 
-    AdFragment adFragment;
     private ViewPager viewPager;
     PNRetrieveFragment pnRetrieveFragment;
     private TabLayout allTabs;
     private ViewPagerAdapter adapter;
+    public List<ItemNameCount> allRestaurantsPreference;
     public static String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        adFragment = (AdFragment)getSupportFragmentManager().findFragmentById(R.id.adFragment);
         allTabs = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager();
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements PNRetrieveFragmen
         if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager
             .PERMISSION_GRANTED) {
             String sms = readSms();
+            allRestaurantsPreference = Utilities.getCountFromText(getAllRestaurantsList(), sms);
             Log.d(TAG, sms);
         } else {
             final int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -55,7 +55,23 @@ public class MainActivity extends AppCompatActivity implements PNRetrieveFragmen
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         String sms = readSms();
+        allRestaurantsPreference = Utilities.getCountFromText(getAllRestaurantsList(), sms);
         Log.d(TAG, sms);
+    }
+
+    private List<String> getAllRestaurantsList() {
+        List<String> allRestaurantsList = new ArrayList<>();
+        String item1 = new String("KFC");
+        allRestaurantsList.add(item1);
+        String item2 = new String("Subway");
+        allRestaurantsList.add(item2);
+        String item3 = new String("McDonalds");
+        allRestaurantsList.add(item3);
+        String item4 = new String("Domino's");
+        allRestaurantsList.add(item4);
+        String item5 = new String("Jio");
+        allRestaurantsList.add(item5);
+        return allRestaurantsList;
     }
 
     private String readSms() {
