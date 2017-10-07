@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.mars.mars.vistara.restaurants.Restaurant;
 import com.mars.mars.vistara.restaurants.RestaurantListFragment;
+import com.mars.mars.vistara.restaurants.menu.Menu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,7 +68,18 @@ public class Utilities {
                     JSONObject restaurant = restaurants.getJSONObject(j);
                     String name = restaurant.getString("name");
                     String imgUrl = restaurant.getString("icon");
+                    JSONArray menuList = restaurant.getJSONArray("menu");
+                    List<Menu> menu = new ArrayList<>();
+                    for(int k=0; k < menuList.length(); k++) {
+                        JSONObject menuObj = menuList.getJSONObject(k);
+                        String item = menuObj.getString("item");
+                        String price = menuObj.getString("price");
+                        String imageUrl = menuObj.getString("imageUrl");
+                        Menu m = new Menu(item, Integer.valueOf(price), imageUrl);
+                        menu.add(m);
+                    }
                     Restaurant restaurantObj = new Restaurant(name, imgUrl);
+                    restaurantObj.setMenu(menu);
                     restaurantsAtAirport.add(restaurantObj);
                 }
                 break;

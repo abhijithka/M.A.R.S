@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements PNRetrieveFragmen
         setContentView(R.layout.activity_main);
         allTabs = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        getSupportActionBar().hide();
         setupViewPager();
         allTabs.setupWithViewPager(viewPager);
         if (ContextCompat.checkSelfPermission(getBaseContext(), "android.permission.READ_SMS") == PackageManager

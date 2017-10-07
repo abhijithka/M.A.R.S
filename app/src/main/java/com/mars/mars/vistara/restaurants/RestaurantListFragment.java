@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.mars.mars.vistara.ItemNameCount;
 import com.mars.mars.vistara.MainActivity;
 import com.mars.mars.vistara.R;
+import com.mars.mars.vistara.restaurants.menu.MenuAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class RestaurantListFragment extends Fragment {
     private View rootView;
     private RecyclerView adRecyclerView;
     private RestaurantAdapter restaurantAdapter;
+
     private Context context;
 
     public RestaurantListFragment() {
@@ -42,7 +44,8 @@ public class RestaurantListFragment extends Fragment {
         adRecyclerView = rootView.findViewById(R.id.restaurants);
         List<Restaurant> restaurants = getRestaurants();
         restaurantAdapter = new RestaurantAdapter(restaurants, getContext());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
+            .HORIZONTAL, false);
         adRecyclerView.setLayoutManager(mLayoutManager);
         adRecyclerView.setItemAnimator(new DefaultItemAnimator());
         adRecyclerView.setAdapter(restaurantAdapter);

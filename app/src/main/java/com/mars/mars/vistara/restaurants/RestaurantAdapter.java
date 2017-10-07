@@ -6,10 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.mars.mars.vistara.MainActivity;
 import com.mars.mars.vistara.R;
+import com.mars.mars.vistara.restaurants.menu.MenuAdapter;
+import com.mars.mars.vistara.restaurants.menu.MenuDialogFragment;
 
 import java.util.List;
 
@@ -34,11 +38,28 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Restaurant restaurant = restaurantsList.get(position);
-        holder.restaurantName.setText(restaurant.getName());
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final Restaurant restaurant = restaurantsList.get(position);
         Glide.with(context).load(restaurant.getImgUrl())
             .into(holder.restaurantImage);
+/*        holder.menuTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.menuRecyclerView.getVisibility() == View.VISIBLE) {
+                    holder.menuRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    holder.menuRecyclerView.setVisibility(View.VISIBLE);
+                }
+            }
+        });*/
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MenuDialogFragment menuDialog = new MenuDialogFragment();
+                menuDialog.setMenu(restaurant.getMenu());
+                menuDialog.show(((MainActivity)context).getSupportFragmentManager(), "menu");
+            }
+        });
     }
 
     @Override
@@ -48,13 +69,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView restaurantName;
+        public TextView restaurantName, menuTextView;
         public ImageView restaurantImage;
+        public RecyclerView menuRecyclerView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            restaurantName = itemView.findViewById(R.id.restaurantName);
             restaurantImage = itemView.findViewById(R.id.restaurantImage);
+            menuTextView = itemView.findViewById(R.id.menuTextView);
+            menuRecyclerView = itemView.findViewById(R.id.menuRecyclerView);
         }
     }
 
