@@ -45,7 +45,7 @@ public class RestaurantListFragment extends Fragment {
         List<Restaurant> restaurants = getRestaurants();
         restaurantAdapter = new RestaurantAdapter(restaurants, getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
-            .HORIZONTAL, false);
+            .VERTICAL, false);
         adRecyclerView.setLayoutManager(mLayoutManager);
         adRecyclerView.setItemAnimator(new DefaultItemAnimator());
         adRecyclerView.setAdapter(restaurantAdapter);

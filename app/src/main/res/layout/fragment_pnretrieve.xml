@@ -14,11 +14,12 @@
             android:layout_marginEnd="20dp">
 
         <EditText
+                android:background="@null"
                 android:id="@+id/pnrEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textCursorDrawable="@null"
                 android:backgroundTint="#ffffff"
+                android:inputType="textCapCharacters"
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff"
                 android:hint="Enter PNR (eg : OVLXO2)" />
@@ -73,8 +74,18 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textColor="#ffffff"
-            android:text="You can order food from these restaurants"
+            android:text="You can now order food from these restaurants"
             android:layout_below="@id/recommendedAdLayout" />
+
+    <ImageButton
+            android:id="@+id/downArrowImgButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleY="1.6"
+            tools:backgroundTint="#000000"
+            android:backgroundTint="#ffffff"
+            android:background="@drawable/downarrow" />
 
     <fragment
             android:id="@+id/restaurantFragment"

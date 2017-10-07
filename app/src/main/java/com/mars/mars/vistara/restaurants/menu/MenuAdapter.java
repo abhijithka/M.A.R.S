@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,10 +35,24 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Menu menuItem = menu.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final Menu menuItem = menu.get(position);
         holder.itemName.setText(menuItem.getName());
         holder.itemPrice.setText(Integer.toString(menuItem.getPrice()));
+        holder.plusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuItem.increment();
+                holder.countEditText.setText(Integer.toString(menuItem.getCount()));
+            }
+        });
+        holder.minusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuItem.decrement();
+                holder.countEditText.setText(Integer.toString(menuItem.getCount()));
+            }
+        });
         Glide.with(context).load(menuItem.getImageUrl())
             .into(holder.itemImage);
     }
@@ -50,13 +65,17 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView itemName, itemPrice;
-        public ImageView itemImage;
+        public EditText countEditText;
+        public ImageView itemImage, plusBtn, minusBtn;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.itemName);
             itemImage = itemView.findViewById(R.id.itemImage);
             itemPrice = itemView.findViewById(R.id.itemPrice);
+            plusBtn = itemView.findViewById(R.id.plusBtn);
+            minusBtn = itemView.findViewById(R.id.minusBtn);
+            countEditText = itemView.findViewById(R.id.countEditText);
         }
     }
 }

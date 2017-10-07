@@ -9,6 +9,26 @@ public class Menu {
     private int price;
     private String imageUrl;
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void increment() {
+        this.count++;
+    }
+
+    public void decrement() {
+        if (this.count != 0) {
+            this.count--;
+        }
+    }
+
+    private int count;
+
     public Menu(String name, int price, String imageUrl) {
         this.name = name;
         this.price = price;

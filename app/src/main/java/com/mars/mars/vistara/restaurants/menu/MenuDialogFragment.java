@@ -1,5 +1,6 @@
 package com.mars.mars.vistara.restaurants.menu;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -50,5 +51,15 @@ public class MenuDialogFragment extends DialogFragment {
         menuRecyclerView.setAdapter(menuAdapter);
     }
 
-
+    @Override
+    public void onStart() {
+        Dialog dialog = getDialog();
+        if (dialog != null)
+        {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, height);
+        }
+        super.onStart();
+    }
 }
