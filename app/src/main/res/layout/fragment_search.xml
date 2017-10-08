@@ -129,7 +129,7 @@
                     android:gravity="center"
                     android:textSize="18sp"
                     android:layout_marginBottom="4dp"
-                    android:text="You can order from these restaurants" />
+                    android:text="Great offers from restaurants at airports" />
 
             <ImageButton
                     android:id="@+id/downArrowImgButton"

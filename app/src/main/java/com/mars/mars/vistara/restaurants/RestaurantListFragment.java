@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.mars.mars.vistara.ItemNameCount;
 import com.mars.mars.vistara.MainActivity;
@@ -24,6 +25,7 @@ public class RestaurantListFragment extends Fragment {
     private View rootView;
     private RecyclerView adRecyclerView;
     private RestaurantAdapter restaurantAdapter;
+    private RelativeLayout cartLayout;
 
     private Context context;
 
@@ -42,10 +44,11 @@ public class RestaurantListFragment extends Fragment {
 
     private void populateAds() {
         adRecyclerView = rootView.findViewById(R.id.restaurants);
+        cartLayout = rootView.findViewById(R.id.cartLayout);
         List<Restaurant> restaurants = getRestaurants();
         restaurantAdapter = new RestaurantAdapter(restaurants, getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
-            .VERTICAL, false);
+            .HORIZONTAL, false);
         adRecyclerView.setLayoutManager(mLayoutManager);
         adRecyclerView.setItemAnimator(new DefaultItemAnimator());
         adRecyclerView.setAdapter(restaurantAdapter);
@@ -74,8 +77,11 @@ public class RestaurantListFragment extends Fragment {
         return restaurants;
     }
 
-    public void setRestaurants(List<Restaurant> restaurants) {
+    public void setRestaurants(List<Restaurant> restaurants, boolean shouldShowCart) {
         List<Restaurant> preferred = filterAndSortPreferred(restaurants);
+        if (shouldShowCart) {
+            cartLayout.setVisibility(View.VISIBLE);
+        }
         restaurantAdapter.setRestaurantsList(preferred);
     }
 

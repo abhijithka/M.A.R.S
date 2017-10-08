@@ -7,13 +7,13 @@ public class TripCardItem {
 
     private String depAirportCode;
     private String arrAirportCode;
-    private String date;
+    private long timeInMillis;
     private String flightNumber;
 
     public TripCardItem(String depAirportCode, String arrAirportCode, String date, String flightNumber) {
         this.depAirportCode = depAirportCode;
         this.arrAirportCode = arrAirportCode;
-        this.date = date;
+        this.timeInMillis = timeInMillis;
         this.flightNumber = flightNumber;
     }
 
@@ -33,12 +33,12 @@ public class TripCardItem {
         this.arrAirportCode = arrAirportCode;
     }
 
-    public String getDate() {
-        return date;
+    public long getTimeInMillis() {
+        return timeInMillis;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDate(long timeInMillis) {
+        this.timeInMillis = timeInMillis;
     }
 
     public String getFlightNumber() {

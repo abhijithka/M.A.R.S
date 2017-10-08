@@ -5,7 +5,7 @@
         android:id="@+id/retrievedPNRLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/trip_bg"
+        android:background="@android:color/transparent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
@@ -25,6 +25,7 @@
                 android:layout_weight="1">
 
             <TextView
+                    android:textColor="#ffffff"
                     android:textStyle="bold"
                     android:id="@+id/flightNumber"
                     android:layout_width="0dp"
@@ -32,6 +33,7 @@
                     android:text="SQ 101"
                     android:layout_height="match_parent" />
             <TextView
+                    android:textColor="#ffffff"
                     android:textStyle="bold"
                     android:id="@+id/depDate"
                     android:text="27 Jan 2018"
@@ -51,7 +53,7 @@
             <TextView
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    android:textColor="#4169e1"
+                    android:textColor="#ffffff"
                     android:id="@+id/depAirportCode"
                     android:gravity="center_vertical"
                     android:layout_width="0dp"
@@ -63,11 +65,12 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
+                    android:tint="#ffffff"
                     android:src="@drawable/arrow" />
 
             <TextView
                     android:textSize="25sp"
-                    android:textColor="#4169e1"
+                    android:textColor="#ffffff"
                     android:textStyle="bold"
                     android:id="@+id/arrAirportCode"
                     android:layout_width="0dp"

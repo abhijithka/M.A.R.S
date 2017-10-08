@@ -1,6 +1,12 @@
 package com.mars.mars.vistara;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -16,9 +22,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,13 +47,13 @@ public class Utilities {
 
     @NonNull
     public static Response.Listener<JSONObject> getRestaurantListener(final String depAirportCode, final
-    RestaurantListFragment restaurantFragment, final List<View> viewsToMakeVisible) {
+    RestaurantListFragment restaurantFragment, final List<View> viewsToMakeVisible, final boolean shouldShowCart) {
         return new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     List<Restaurant> restaurants = parseRestaurantDataAndGetRestaurantsAt(response, depAirportCode);
-                    restaurantFragment.setRestaurants(restaurants);
+                    restaurantFragment.setRestaurants(restaurants, shouldShowCart);
                     for (View view : viewsToMakeVisible) {
                         view.setVisibility(View.VISIBLE);
                     }
@@ -121,5 +129,40 @@ public class Utilities {
 
         }
         return(count);
+    }
+
+    public static String formatMillisToDate(long timeInMillis) {
+        Date date = new Date(timeInMillis);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        return sdf.format(date);
+    }
+
+    public static void scheduleNotification(Notification notification, long delay, Context context) {
+
+        Intent notificationIntent = new Intent(context, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent
+            .FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+    public static Notification getNotification(String content, Context context) {
+        Notification.Builder builder = new Notification.Builder(context);
+        builder.setColor(Color.parseColor("#3498DB"));
+        builder.setContentTitle("You can pre order from your favourite airports now");
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.arrow);
+        return builder.build();
+    }
+
+    public static long getTimeToSendNotification(long timeInMillis) {
+        Date currentDate = new Date();
+        long twoDays = 172800000;
+        long tts = timeInMillis - currentDate.getTime() - twoDays;
+        return tts;
     }
 }

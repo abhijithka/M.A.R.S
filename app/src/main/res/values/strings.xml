@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Vistara</string>
-    <string name="pnrdataurl">https://api.myjson.com/bins/187n9x</string>
+    <string name="pnrdataurl">https://api.myjson.com/bins/uf16t</string>
     <string name="restaurantDataUrl">https://api.myjson.com/bins/lilp1</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

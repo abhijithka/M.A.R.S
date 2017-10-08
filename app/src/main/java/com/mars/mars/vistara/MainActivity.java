@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements PNRetrieveFragmen
     private void setupViewPager() {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new SearchFragment(), "SEARCH FLIGHTS");
-        adapter.addFrag(new PNRetrieveFragment(), "FETCH TRIP");
+        adapter.addFrag(new PNRetrieveFragment(), "CHECK IN");
         viewPager.setAdapter(adapter);
     }
 

@@ -1,4 +1,4 @@
-package com.mars.mars.vistara.advertisements;
+package com.mars.mars.vistara.search;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mars.mars.vistara.R;
+import com.mars.mars.vistara.Utilities;
 import com.mars.mars.vistara.search.TripCardItem;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         TripCardItem trip = tripList.get(position);
         holder.flightNumber.setText(trip.getFlightNumber());
-        holder.depDate.setText(trip.getDate());
+        holder.depDate.setText(Utilities.formatMillisToDate(trip.getTimeInMillis()));
         holder.depAirportCode.setText(trip.getDepAirportCode());
         holder.arrAirportCode.setText(trip.getArrAirportCode());
     }

@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -6,11 +6,65 @@
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/restaurants"
-            android:scrollbars="vertical"
+            android:scrollbars="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="180dp"
             android:visibility="gone"
+            android:layout_marginBottom="20dp"
+            tools:visibility="visible"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical" />
 
-</FrameLayout>
+    <RelativeLayout
+            android:id="@+id/cartLayout"
+            android:layout_margin="5dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_below="@+id/restaurants">
+
+        <Button
+                android:id="@+id/viewCartTextView"
+                android:text="View Cart"
+                android:background="#ffffff"
+                android:gravity="center"
+                android:layout_marginStart="80dp"
+                android:layout_marginEnd="80dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"/>
+
+        <LinearLayout
+                android:layout_below="@id/viewCartTextView"
+                android:id="@+id/termsAndConditionsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp">
+
+            <CheckBox
+                    android:id="@+id/checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            <TextView
+                    android:textColor="#ffffff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I agree that airline will not be responsible for the quality of food delivered"/>
+        </LinearLayout>
+        <Button
+                android:layout_marginStart="130dp"
+                android:layout_marginEnd="80dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:id="@+id/placeOrder"
+                android:gravity="center"
+                android:background="#ffffff"
+                android:text="Place order"
+                android:layout_below="@id/termsAndConditionsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

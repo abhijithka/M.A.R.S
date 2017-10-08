@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -25,8 +24,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.mars.mars.vistara.R;
 import com.mars.mars.vistara.Utilities;
-import com.mars.mars.vistara.advertisements.AdFragment;
-import com.mars.mars.vistara.advertisements.SearchResultAdapter;
 import com.mars.mars.vistara.restaurants.RestaurantListFragment;
 
 import java.util.ArrayList;
@@ -65,7 +62,8 @@ public class SearchFragment extends Fragment {
         bannerTextView = rootView.findViewById(R.id.bannerTextView);
         downArrowImgButton = rootView.findViewById(R.id.downArrowImgButton);
         searchBtn = rootView.findViewById(R.id.searchBtn);
-        restaurantFragment = (RestaurantListFragment)getChildFragmentManager().findFragmentById(R.id.restaurantFragment);
+        restaurantFragment = (RestaurantListFragment)getChildFragmentManager()
+            .findFragmentById(R.id.restaurantFragment);
         restaurantsRecyclerView = restaurantFragment.getView().findViewById(R.id.restaurants);
         bannerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +90,7 @@ public class SearchFragment extends Fragment {
                     viewsToMakeVisible.add(bannerLayout);
                     JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, getContext().getString(R
                         .string.restaurantDataUrl), null, Utilities.getRestaurantListener(charSequence.toString(),
-                        restaurantFragment, viewsToMakeVisible), Utilities.getRestaurantErrorListener());
+                        restaurantFragment, viewsToMakeVisible, false), Utilities.getRestaurantErrorListener());
                     final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                     requestQueue.add(obreq);
                 } else {

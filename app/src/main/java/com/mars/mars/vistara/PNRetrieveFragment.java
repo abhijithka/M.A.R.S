@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.mars.mars.vistara.restaurants.Restaurant;
 import com.mars.mars.vistara.restaurants.RestaurantListFragment;
+import com.mars.mars.vistara.search.TripCardItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,8 @@ public class PNRetrieveFragment extends Fragment {
     onPnrRetrievedListener pnrRetrievedCallBack;
     RestaurantListFragment restaurantFragment;
     TextView bannerTextView;
+    List<TripCardItem> trips;
+    TextView depDateTextView;
 
     public interface onPnrRetrievedListener {
 
@@ -69,6 +72,7 @@ public class PNRetrieveFragment extends Fragment {
         fetchTripBtn = rootView.findViewById(R.id.fetchTripBtn);
         retrievedPNRLayout = rootView.findViewById(R.id.retrievedPNRLayout);
         bannerTextView = rootView.findViewById(R.id.bannerTextView);
+        depDateTextView = rootView.findViewById(R.id.depDate);
         progressBar = rootView.findViewById(R.id.progressBar);
         retrievedPNRLayout.setVisibility(View.GONE);
         restaurantFragment = (RestaurantListFragment)getChildFragmentManager()
@@ -116,20 +120,31 @@ public class PNRetrieveFragment extends Fragment {
                     Log.d(TAG, response.toString());
                     boolean pnrFound = false;
                     JSONArray pnrList = response.getJSONArray("pnrList");
+                    trips = new ArrayList<>();
                     for (int i = 0; i < pnrList.length(); i++) {
                         JSONObject trip = pnrList.getJSONObject(i);
                         if (trip.getString("pnr").equalsIgnoreCase(pnrEditText.getText().toString())) {
                             String depAirportCode = trip.getString("depAirportCode");
+                            String arrAirportCode = trip.getString("arrAirportCode");
+                            String depDateTime = trip.getString("depDateTime");
+                            TripCardItem t = new TripCardItem(depAirportCode, arrAirportCode, depDateTime, "UK 0711");
+                            trips.add(t);
                             List<View> viewsToMakeVisible = new ArrayList<>();
                             viewsToMakeVisible.add(bannerTextView);
                             viewsToMakeVisible.add(restaurantFragment.getView().findViewById(R.id.restaurants));
                             JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.GET, getContext().getString(R
                                 .string.restaurantDataUrl), null,
-                                Utilities.getRestaurantListener(depAirportCode, restaurantFragment, viewsToMakeVisible),
+                                Utilities.getRestaurantListener(depAirportCode, restaurantFragment,
+                                    viewsToMakeVisible, true),
                                 Utilities.getRestaurantErrorListener());
                             requestQueue.add(obreq);
                             retrievedPNRLayout.setVisibility(View.VISIBLE);
                             pnrFound = true;
+                            long delayTrigger = Utilities.getTimeToSendNotification(Long.valueOf(depDateTime));
+                            delayTrigger = 5000;
+                            depDateTextView.setText(Utilities.formatMillisToDate(Long.valueOf(depDateTime)));
+                            Utilities.scheduleNotification(Utilities.getNotification("KFC, Subway, Dominos",
+                                getContext()), delayTrigger, getContext());
                             break;
                         }
                     }
